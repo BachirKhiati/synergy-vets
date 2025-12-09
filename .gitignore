@@ -1,0 +1,19 @@
+# Node
+node_modules/
+apps/web/node_modules/
+apps/web/.next/
+
+# Go
+bin/
+*.log
+
+# Env
+.env
+*.env
+.env.local
+.env.production
+.env.development
+
+# Editor
+.vscode/
+.DS_Store

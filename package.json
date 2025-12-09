@@ -1,0 +1,14 @@
+{
+  "name": "synergyvets-platform",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/web"
+  ],
+  "scripts": {
+    "dev:web": "npm --prefix apps/web run dev",
+    "build:web": "npm --prefix apps/web run build",
+    "lint:web": "npm --prefix apps/web run lint",
+    "format": "npm --prefix apps/web run lint -- --fix"
+  }
+}

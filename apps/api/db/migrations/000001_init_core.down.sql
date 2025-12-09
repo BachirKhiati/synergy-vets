@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS ingestion_jobs;
+DROP TABLE IF EXISTS resources;
+DROP TABLE IF EXISTS announcements;
+DROP TABLE IF EXISTS application_events;
+DROP TABLE IF EXISTS job_applications;
+DROP TABLE IF EXISTS job_job_tags;
+DROP TABLE IF EXISTS job_tags;
+DROP TABLE IF EXISTS jobs;
+DROP TABLE IF EXISTS job_locations;
+DROP TABLE IF EXISTS user_profiles;
+DROP TABLE IF EXISTS user_sessions;
+DROP TABLE IF EXISTS users;
