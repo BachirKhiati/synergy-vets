@@ -1,15 +1,18 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { List, Map as MapIcon } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import JobFilters from "@/components/jobs/JobFilters";
 import JobCard from "@/components/jobs/JobCard";
 import JobsMap from "@/components/jobs/JobsMap";
 import TalentSpotlight from "@/components/jobs/TalentSpotlight";
+import FeaturedRoles from "@/components/jobs/FeaturedRoles";
 import { Button } from "@/components/ui/button";
 import { jobsData, salaryRanges, Job } from "@/lib/jobsData";
 
 const Jobs = () => {
+  const location = useLocation();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedRegion, setSelectedRegion] = useState("All Regions");
@@ -17,6 +20,13 @@ const Jobs = () => {
   const [selectedSalary, setSelectedSalary] = useState("All Salaries");
   const [selectedSpecialty, setSelectedSpecialty] = useState("All Specialties");
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+
+  // Handle region from navigation state
+  useEffect(() => {
+    if (location.state?.selectedRegion) {
+      setSelectedRegion(location.state.selectedRegion);
+    }
+  }, [location.state]);
 
   const filteredJobs = useMemo(() => {
     return jobsData.filter((job) => {
@@ -77,6 +87,8 @@ const Jobs = () => {
           </div>
         </div>
       </section>
+
+      <FeaturedRoles />
 
       <TalentSpotlight />
 
