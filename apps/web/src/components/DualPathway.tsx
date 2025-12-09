@@ -61,11 +61,11 @@ const DualPathway = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Candidates Pathway */}
-          <div className="relative">
-            <div className="sticky top-24">
-              <div className="flex items-center gap-3 mb-8">
+          <div className="relative flex flex-col items-center">
+            <div className="w-full max-w-md">
+              <div className="flex items-center justify-center gap-3 mb-8">
                 <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
                   <Users className="w-6 h-6 text-primary" />
                 </div>
@@ -91,19 +91,21 @@ const DualPathway = () => {
                 ))}
               </div>
 
-              <Button variant="hero" size="lg" className="mt-8" asChild>
-                <Link to="/candidates">
-                  <Upload className="w-4 h-4" />
-                  Upload Your CV
-                </Link>
-              </Button>
+              <div className="flex justify-center">
+                <Button variant="hero" size="lg" className="mt-8" asChild>
+                  <Link to="/candidates">
+                    <Upload className="w-4 h-4" />
+                    Upload Your CV
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
 
           {/* Employers Pathway */}
-          <div className="relative" id="employers">
-            <div className="sticky top-24">
-              <div className="flex items-center gap-3 mb-8">
+          <div className="relative flex flex-col items-center" id="employers">
+            <div className="w-full max-w-md">
+              <div className="flex items-center justify-center gap-3 mb-8">
                 <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center">
                   <Building className="w-6 h-6 text-secondary" />
                 </div>
@@ -129,12 +131,14 @@ const DualPathway = () => {
                 ))}
               </div>
 
-              <Button variant="heroOutline" size="lg" className="mt-8" asChild>
-                <Link to="/employers">
-                  <Building className="w-4 h-4" />
-                  Register a Vacancy
-                </Link>
-              </Button>
+              <div className="flex justify-center">
+                <Button variant="heroOutline" size="lg" className="mt-8" asChild>
+                  <Link to="/employers">
+                    <Building className="w-4 h-4" />
+                    Register a Vacancy
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>

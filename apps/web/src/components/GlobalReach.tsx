@@ -5,11 +5,11 @@ const GlobalReach = () => {
     <section className="relative bg-gradient-to-b from-card via-background to-card overflow-hidden">
       {/* Background Image - Dog */}
       <div 
-        className="absolute inset-0 z-0 opacity-100 pointer-events-none"
+        className="absolute inset-0 z-0 opacity-50 pointer-events-none"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=1200&q=80")',
+          backgroundImage: 'url("https://images.unsplash.com/photo-1543852786-1cf6624b9987?auto=format&fit=crop&w=1200&q=80")',
           backgroundPosition: 'right center',
-          backgroundSize: '50%',
+          backgroundSize: '40%',
           backgroundRepeat: 'no-repeat',
         }}
       >
