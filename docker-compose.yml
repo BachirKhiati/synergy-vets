@@ -1,0 +1,87 @@
+name: synergy-vets-dev
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: synergy_vets
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "15433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    ports:
+      - "16379:6379"
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: ["server", "/data", "--console-address", ":9001"]
+    ports:
+      - "19000:9000"
+      - "19001:9001"
+    volumes:
+      - minio_data:/data
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    restart: unless-stopped
+    ports:
+      - "11125:1025"
+      - "18125:8025"
+
+  migrate:
+    image: golang:1.25-alpine
+    working_dir: /workspace/apps/api
+    environment:
+      CGO_ENABLED: "0"
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/synergy_vets?sslmode=disable
+    command: ["go", "run", "./cmd/migrate"]
+    volumes:
+      - .:/workspace
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile.dev
+    working_dir: /workspace/apps/api
+    environment:
+      CGO_ENABLED: "0"
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/synergy_vets?sslmode=disable
+      API_ALLOWED_ORIGINS: http://localhost:13001
+      LOG_PRETTY: "true"
+    volumes:
+      - .:/workspace
+      - go_mod_cache:/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+    ports:
+      - "18081:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_data:
+  minio_data:
+  go_mod_cache:
+  go_build_cache:
