@@ -80,7 +80,7 @@ jobs:
               # Install Go dependencies
               cd apps/api
               go mod download
-              cd ..
+              cd ../..
 
               touch .dev_setup_done
             fi
