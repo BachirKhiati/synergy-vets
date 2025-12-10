@@ -65,6 +65,23 @@ jobs:
 
             # Run production setup (force update)
             echo "🔧 Setting up production environment..."
+            
+            # Setup PostgreSQL database (first time)
+            if [ ! -f .production_setup_done ]; then
+              echo "📊 Setting up PostgreSQL database..."
+              sudo -u postgres psql <<PGSQL
+              SELECT 'CREATE DATABASE vets_prod' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'vets_prod')\gexec
+              DO \$\$
+              BEGIN
+                IF NOT EXISTS (SELECT FROM pg_user WHERE usename = 'vets_prod') THEN
+                  CREATE USER vets_prod WITH PASSWORD '$DATABASE_URL';
+                END IF;
+              END
+              \$\$;
+              GRANT ALL PRIVILEGES ON DATABASE vets_prod TO vets_prod;
+PGSQL
+            fi
+            
             # Install Node.js dependencies
             npm install
             npm --prefix apps/web install
