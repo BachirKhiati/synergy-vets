@@ -32,6 +32,7 @@ jobs:
         run: |
           ssh -A -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST <<EOF
             set -e
+            export PATH=\$PATH:/usr/local/go/bin
 
             DEPLOY_DIR="/home/$DEPLOY_USER/vets-dev"
             REPO_URL="git@github.com:${{ github.repository }}.git"
