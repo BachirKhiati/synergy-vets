@@ -68,18 +68,9 @@ jobs:
               echo "🔧 Setting up development environment..."
               
               # Setup PostgreSQL database
-              echo "📊 Setting up PostgreSQL database..."
-              sudo -u postgres psql <<PGSQL
-              SELECT 'CREATE DATABASE vets_dev' WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'vets_dev')\gexec
-              DO \$\$
-              BEGIN
-                IF NOT EXISTS (SELECT FROM pg_user WHERE usename = 'vets_dev') THEN
-                  CREATE USER vets_dev WITH PASSWORD '$DATABASE_URL';
-                END IF;
-              END
-              \$\$;
-              GRANT ALL PRIVILEGES ON DATABASE vets_dev TO vets_dev;
-PGSQL
+              echo "📊 PostgreSQL database setup skipped (manual setup required)..."
+              # Please ensure the database 'vets_dev' and user 'vets_dev' exist.
+              # See server setup instructions.
               
               # Install Node.js dependencies
               npm install
