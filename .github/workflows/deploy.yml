@@ -1,0 +1,79 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+  GO_VERSION: '1.25'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+          cache-dependency-path: apps/api/go.sum
+
+      - name: Install dependencies
+        run: |
+          npm ci
+          npm --prefix apps/web ci
+
+      - name: Build Next.js application
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+        run: npm run build --prefix apps/web
+
+      - name: Build Go API
+        run: |
+          cd apps/api
+          CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o bin/api ./cmd/api
+
+      - name: Run tests
+        run: |
+          npm run test --prefix apps/web --if-present
+          cd apps/api && go test -v ./... || true
+
+      - name: Deploy to production
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          echo "Deployment step - configure based on your hosting provider"
+          # Example for Vercel:
+          # npm install -g vercel
+          # vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          
+          # Example for custom server via rsync:
+          # mkdir -p ~/.ssh
+          # echo "$DEPLOY_KEY" > ~/.ssh/deploy_key
+          # chmod 600 ~/.ssh/deploy_key
+          # rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+          #   apps/web/.next/ $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/web/
+          # rsync -avz -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" \
+          #   apps/api/bin/api $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/api/
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          echo "Deployment completed with status: ${{ job.status }}"
+          # Add notification logic (Slack, Discord, email, etc.)

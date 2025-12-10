@@ -2,7 +2,7 @@ import { Search, Globe, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import heroDog from "@/assets/hero-dog.jpg";
+import heroDog from "@/assets/hero-dog.png";
 import { useState } from "react";
 
 const regions = [
@@ -58,7 +58,7 @@ const HeroSection = () => {
             <br />
             <span className="text-foreground">with the best talent,</span>
             <br />
-            <span className="gradient-text italic">across the UK</span>
+            <span className="gradient-text italic">Nationwide</span>
             <span className="text-foreground">.</span>
           </h1>
 
