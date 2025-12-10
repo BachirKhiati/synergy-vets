@@ -1,9 +1,9 @@
-name: Deploy to Development
+name: Deploy to Production
 
 on:
   push:
     branches:
-      - main # Trigger on pushes to the main branch (dev environment for now)
+      - prod # Trigger on pushes to the prod branch
 
 jobs:
   deploy:
@@ -16,27 +16,27 @@ jobs:
       - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.5.4
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
 
-      - name: Add dev server to known hosts
+      - name: Add production server to known hosts
         run: |
-          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST_PROD }} >> ~/.ssh/known_hosts
 
-      - name: Deploy to Development VM
+      - name: Deploy to Production VM
         env:
-          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER_PROD }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST_PROD }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET_PROD }}
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL_PROD }}
         run: |
           ssh -A -o StrictHostKeyChecking=no $DEPLOY_USER@$DEPLOY_HOST <<'EOF'
             set -e
             
-            DEPLOY_DIR="/home/$DEPLOY_USER/vets-dev"
+            DEPLOY_DIR="/home/$DEPLOY_USER/vets-prod"
             REPO_URL="git@github.com:${{ github.repository }}.git"
             
-            echo "=== Starting Development Deployment ==="
+            echo "=== Starting Production Deployment ==="
             
             # Ensure deploy directory exists and navigate to it
             mkdir -p "$DEPLOY_DIR"
@@ -56,77 +56,76 @@ jobs:
               mkdir -p temp_backup
               
               # Now safe to reset git
-              git reset --hard origin/main
+              git reset --hard origin/prod
               git clean -fd
               
               # Clean up temp backup
               rm -rf temp_backup
             fi
 
-            # Run development setup (first time only)
-            if [ ! -f .dev_setup_done ]; then
-              echo "🔧 Setting up development environment..."
-              # Install Node.js dependencies
-              npm install
-              npm --prefix apps/web install
-              
-              # Install Go dependencies
-              cd apps/api
-              go mod download
-              cd ..
-              
-              touch .dev_setup_done
-            fi
+            # Run production setup (force update)
+            echo "🔧 Setting up production environment..."
+            # Install Node.js dependencies
+            npm install
+            npm --prefix apps/web install
+            
+            # Install Go dependencies
+            cd apps/api
+            go mod download
+            cd ..
+            
+            touch .production_setup_done
 
             # Update environment files with secrets
-            echo "🔐 Configuring development environment variables..."
+            echo "🔐 Configuring production environment variables..."
             
-            # API environment for dev
-            echo "API_HTTP_ADDR=:8081" > apps/api/.env.production
+            # API environment for production
+            echo "API_HTTP_ADDR=:8080" > apps/api/.env.production
             echo "DATABASE_URL=$DATABASE_URL" >> apps/api/.env.production
             echo "AUTH_SECRET=$AUTH_SECRET" >> apps/api/.env.production
-            echo "API_ALLOWED_ORIGINS=https://vets-dev.example.com,http://localhost:3002" >> apps/api/.env.production
+            echo "API_ALLOWED_ORIGINS=https://synergyvets.com,https://www.synergyvets.com,http://synergyvets.com,http://www.synergyvets.com" >> apps/api/.env.production
             echo "API_SHUTDOWN_TIMEOUT=10s" >> apps/api/.env.production
             echo "LOG_LEVEL=info" >> apps/api/.env.production
             echo "LOG_PRETTY=false" >> apps/api/.env.production
             echo "AUTH_ACCESS_TOKEN_TTL=15m" >> apps/api/.env.production
             echo "AUTH_REFRESH_TOKEN_TTL=720h" >> apps/api/.env.production
 
-            # Frontend environment for dev
+            # Frontend environment for production
             echo "NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL" > apps/web/.env.production
 
             # Build and deploy backend
-            echo "🚀 Building and deploying development backend..."
+            echo "🚀 Building and deploying production backend..."
             cd apps/api
             CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o bin/api ./cmd/api
             
             # Stop existing PM2 process if running
-            pm2 delete vets-api-dev 2>/dev/null || true
+            pm2 delete vets-api-prod 2>/dev/null || true
             
             # Start API with PM2
-            pm2 start bin/api --name vets-api-dev --env production
+            pm2 start bin/api --name vets-api-prod --env production
             cd ../..
 
             # Build and deploy frontend
-            echo "🎨 Building and deploying development frontend..."
+            echo "🎨 Building and deploying production frontend..."
             cd apps/web
             npm run build
             
             # Stop existing PM2 process if running
-            pm2 delete vets-web-dev 2>/dev/null || true
+            pm2 delete vets-web-prod 2>/dev/null || true
             
             # Start Next.js with PM2
-            pm2 start npm --name vets-web-dev -- start -- -p 3002
+            pm2 start npm --name vets-web-prod -- start -- -p 3001
             cd ../..
 
             # Save PM2 configuration
             pm2 save
 
-            echo "=== Development Deployment Status ==="
+            echo "=== Production Deployment Status ==="
             pm2 status
             echo ""
-            echo "✅ Development deployment completed successfully!"
-            echo "🌐 Frontend: Running on port 3002"
-            echo "🔧 Backend API: Running on port 8081"
-            echo "📁 Configure nginx to proxy your dev domain to these ports"
+            echo "✅ Production deployment completed successfully!"
+            echo "🌐 Frontend: Running on port 3001"
+            echo "🔧 Backend API: Running on port 8080"
+            echo "📁 Configure nginx to proxy production domains to these ports"
+            echo "🌍 Production ready for: synergyvets.com, www.synergyvets.com"
           EOF
