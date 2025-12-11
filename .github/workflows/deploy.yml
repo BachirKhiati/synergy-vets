@@ -92,7 +92,7 @@ jobs:
             echo "API_HTTP_ADDR=:8081" > apps/api/.env.production
             echo "DATABASE_URL=$DATABASE_URL" >> apps/api/.env.production
             echo "AUTH_SECRET=$AUTH_SECRET" >> apps/api/.env.production
-            echo "API_ALLOWED_ORIGINS=https://vets-dev.example.com,http://localhost:3002" >> apps/api/.env.production
+            echo "API_ALLOWED_ORIGINS=https://vets.firenoid.com,http://localhost:3002" >> apps/api/.env.production
             echo "API_SHUTDOWN_TIMEOUT=10s" >> apps/api/.env.production
             echo "LOG_LEVEL=info" >> apps/api/.env.production
             echo "LOG_PRETTY=false" >> apps/api/.env.production
@@ -133,7 +133,6 @@ jobs:
             pm2 status
             echo ""
             echo "✅ Development deployment completed successfully!"
-            echo "🌐 Frontend: Running on port 3002"
-            echo "🔧 Backend API: Running on port 8081"
-            echo "📁 Configure nginx to proxy your dev domain to these ports"
+            echo "🌐 Frontend: https://vets.firenoid.com (port 3002)"
+            echo "🔧 Backend API: https://api.vets.firenoid.com (port 8081)"
           EOF
