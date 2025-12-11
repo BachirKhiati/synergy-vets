@@ -122,8 +122,8 @@ jobs:
             # Stop existing PM2 process if running
             pm2 delete vets-web-dev 2>/dev/null || true
 
-            # Start Next.js with PM2
-            pm2 start npm --name vets-web-dev -- start -- -p 3002
+            # Start Vite frontend with serve (serves dist folder)
+            pm2 start serve --name vets-web-dev -- -s dist -l 3002
             cd ../..
 
             # Save PM2 configuration
