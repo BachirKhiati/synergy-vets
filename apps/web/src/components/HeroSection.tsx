@@ -31,11 +31,11 @@ const HeroSection = () => {
     <section className="relative min-h-[70vh] pt-20 overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
-        <div className="absolute inset-y-0 right-0 w-3/4">
+        <div className="absolute inset-0">
           <img
             src={heroDog}
             alt="Professional veterinary care"
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-60"
             style={{ objectPosition: 'center center' }}
           />
         </div>
