@@ -35,11 +35,11 @@ const HeroSection = () => {
           <img
             src={heroDog}
             alt="Professional veterinary care"
-            className="w-full h-full object-cover opacity-60"
+            className="w-full h-full object-cover opacity-80"
             style={{ objectPosition: 'center center' }}
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-background/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/20" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background" />
       </div>
       
