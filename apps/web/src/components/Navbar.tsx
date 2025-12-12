@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "@/components/NavLink";
+import ColorThemeSlider from "@/components/ColorThemeSlider";
 import logoVertical from "@/assets/logo-vertical.svg";
 
 const Navbar = () => {
@@ -74,15 +75,19 @@ const Navbar = () => {
                 Register Vacancy
               </Link>
             </Button>
+            <ColorThemeSlider />
           </div>
 
           {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-foreground hover:text-primary transition-colors"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="lg:hidden flex items-center gap-2">
+            <ColorThemeSlider />
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 text-foreground hover:text-primary transition-colors"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
