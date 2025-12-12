@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { NavLink } from "@/components/NavLink";
+import logoVertical from "@/assets/logo-vertical.svg";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,14 +13,12 @@ const Navbar = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary via-accent to-secondary flex items-center justify-center shadow-lg group-hover:shadow-[0_0_30px_hsl(3,90%,68%,0.4)] transition-shadow duration-300">
-              <span className="text-primary-foreground font-bold text-lg">SV</span>
-            </div>
-            <div className="hidden sm:block">
-              <span className="text-xl font-bold text-foreground">Synergy</span>
-              <span className="text-xl font-bold gradient-text">Vets</span>
-            </div>
+          <Link to="/" className="flex items-center group">
+            <img
+              src={logoVertical}
+              alt="SynergyVets"
+              className="h-20 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
