@@ -12,12 +12,12 @@
       }
 
       .st3 {
-        font-family: ArialMT, Arial;
+        font-family: Arial, 'Arial MT', sans-serif;
         font-size: 94.01px;
       }
 
       .st1 {
-        font-family: AlegreyaSansSC-Regular, 'Alegreya Sans SC';
+        font-family: 'Alegreya Sans SC', AlegreyaSansSC-Regular, sans-serif;
         font-size: 38.41px;
         letter-spacing: .5em;
       }
