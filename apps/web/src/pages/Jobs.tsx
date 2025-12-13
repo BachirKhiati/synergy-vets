@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import JobFilters from "@/components/jobs/JobFilters";
 import JobCard from "@/components/jobs/JobCard";
 import JobsMap from "@/components/jobs/JobsMap";
-import TalentSpotlight from "@/components/jobs/TalentSpotlight";
 import FeaturedRoles from "@/components/jobs/FeaturedRoles";
 import { Button } from "@/components/ui/button";
 import { jobsData, salaryRanges, Job } from "@/lib/jobsData";
@@ -113,8 +112,6 @@ const Jobs = () => {
       </section>
 
       <FeaturedRoles />
-
-      <TalentSpotlight />
 
       {/* Main Content */}
       <section className="py-8 lg:py-12">
