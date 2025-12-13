@@ -75,14 +75,14 @@ const Employers = () => {
             <div className="max-w-4xl">
               <Badge variant="secondary" className="mb-4">For hiring teams</Badge>
               <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
-                Build a veterinary team that delivers <span className="gradient-text">exceptional care</span>
+                Vacancy Call Back <span className="gradient-text">Request</span>
               </h1>
               <p className="mt-4 text-muted-foreground text-lg max-w-3xl">
-                Synergy Vets partners with clinics, hospitals, and corporate groups to source permanent and locum professionals who match your culture and growth ambitions.
+                If you have a current vacancy that you are looking to fill, one of our fully trained consultants will be happy to discuss any candidates we have available. Simply leave your details with us and you'll be contacted within the next 24 hrs. If you have some time now, why not have a look through some of our available candidates online?
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Button variant="hero" size="lg" asChild>
-                  <Link to="/contact">Book a discovery call</Link>
+                  <Link to="/contact">Arrange a callback</Link>
                 </Button>
                 <Button variant="heroOutline" size="lg" asChild>
                   <Link to="/candidates">Explore candidate experience</Link>

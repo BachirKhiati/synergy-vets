@@ -117,7 +117,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start gap-3 text-muted-foreground">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                <span className="text-sm">United Kingdom</span>
+                <span className="text-sm">21A Rolle Street, Exmouth, Devon, EX8 1HA</span>
               </li>
             </ul>
           </div>
@@ -129,7 +129,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-muted-foreground">
-              © 2024 Synergy Vets. All rights reserved.
+              © 2025 Synergy Vets. All rights reserved.
             </p>
             <div className="flex gap-6">
               <Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link>

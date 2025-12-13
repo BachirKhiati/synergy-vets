@@ -93,14 +93,14 @@ const Candidates = () => {
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="secondary" className="mb-4">For veterinary professionals</Badge>
               <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
-                Unlock the next chapter of your <span className="gradient-text">veterinary career</span>
+                Upload your CV / <span className="gradient-text">Register</span>
               </h1>
               <p className="mt-4 text-muted-foreground text-lg">
-                We champion candidates across clinical and leadership roles worldwide. From first conversation to first day on the job, our team stays by your side.
+                We have updated our Privacy Policy in regulations with GDPR. Please have a look at the link for more details: Privacy Policy.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button variant="hero" size="lg" asChild>
-                  <Link to="/contact">Speak with a consultant</Link>
+                  <Link to="/contact">Arrange a callback</Link>
                 </Button>
                 <Button variant="heroOutline" size="lg" asChild>
                   <Link to="/jobs">Browse live roles</Link>

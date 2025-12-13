@@ -27,26 +27,26 @@ const contactDetails = [
   {
     icon: Phone,
     title: "Call us",
-    value: "+44 (0)20 1234 5678",
+    value: "01395 200 189",
     description: "Speak directly with a veterinary recruitment specialist.",
   },
   {
     icon: Mail,
     title: "Email",
-    value: "hello@synergyvets.com",
+    value: "info@synergyvets.com",
     description: "Share role briefs, CVs, or general enquiries any time.",
   },
   {
     icon: MapPin,
-    title: "Global hubs",
-    value: "London | Dubai | Sydney",
-    description: "Supporting placements and talent programmes worldwide.",
+    title: "Address",
+    value: "21A Rolle Street, Exmouth, Devon, EX8 1HA",
+    description: "Registered in England No: 6837709",
   },
   {
     icon: Clock,
-    title: "Office hours",
-    value: "Mon – Fri, 8:00 to 18:00",
-    description: "Dedicated consultants available across multiple time zones.",
+    title: "Fax",
+    value: "0870 755 9936",
+    description: "Send us documents via fax.",
   },
 ];
 

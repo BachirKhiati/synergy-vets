@@ -76,10 +76,13 @@ const About = () => {
             <div className="max-w-3xl">
               <Badge variant="secondary" className="mb-4">Our story</Badge>
               <h1 className="text-3xl lg:text-5xl font-bold text-foreground">
-                We connect veterinary teams with people who care as deeply as they do
+                Veterinary Recruitment Specialist
               </h1>
               <p className="mt-4 text-muted-foreground text-lg">
-                Synergy Vets blends decades of veterinary practice experience with specialist recruitment expertise. We exist to help clinics thrive, candidates grow, and communities receive exceptional animal care.
+                SynergyVets is a dedicated Veterinary Recruitment Agency, with almost 30 years' collective experience supporting the Veterinary profession with locum and permanent personnel. We have developed tried and trusted relationships with an extensive network of Veterinary Practices throughout the UK, which enables us to offer an up-to-date online lists of Permanent/Locum Vet and Nurse roles.
+              </p>
+              <p className="mt-4 text-muted-foreground text-lg">
+                All our clients and candidates are treated with the respect they deserve. We are well-aware that our reputation depends entirely on providing the best possible service, whether we are searching out appropriate jobs, minimising admin through our payroll system or offering advice to practices that have recruitment needs.
               </p>
             </div>
           </div>
