@@ -29,7 +29,9 @@ type ListParams struct {
 	PageSize      int
 	Search        string
 	Countries     []string
+	Regions       []string
 	ContractTypes []string
+	Categories    []string
 }
 
 // Job represents a job listing for public consumption.
@@ -101,12 +103,16 @@ func (s *Service) ListPublishedJobs(ctx context.Context, params ListParams) (Lis
 	}
 
 	countries := normalizeList(params.Countries)
+	regions := normalizeList(params.Regions)
 	contractTypes := normalizeList(params.ContractTypes)
+	categories := normalizeList(params.Categories)
 
 	rows, err := s.store.Queries().ListPublishedJobs(ctx, queries.ListPublishedJobsParams{
 		Search:        search,
 		Countries:     countries,
+		Regions:       regions,
 		ContractTypes: contractTypes,
+		Categories:    categories,
 		OffsetRows:    offset,
 		LimitRows:     limit,
 	})
@@ -180,15 +186,33 @@ func (s *Service) ListPublishedJobs(ctx context.Context, params ListParams) (Lis
 	}, nil
 }
 
-// GetPublishedJob retrieves a single published job by its slug.
-func (s *Service) GetPublishedJob(ctx context.Context, slug string) (JobDetail, error) {
+// GetPublishedJob retrieves a single published job by its slug or ID.
+func (s *Service) GetPublishedJob(ctx context.Context, slugOrID string) (JobDetail, error) {
 	result := JobDetail{}
-	normalized := strings.TrimSpace(slug)
+	normalized := strings.TrimSpace(slugOrID)
 	if normalized == "" {
 		return result, ErrJobNotFound
 	}
 
-	row, err := s.store.Queries().GetJobBySlug(ctx, normalized)
+	var row queries.GetJobBySlugRow
+	var err error
+
+	// Check if the input is a valid UUID
+	if id, parseErr := uuid.Parse(normalized); parseErr == nil {
+		// It's a UUID, try to fetch by ID
+		idRow, idErr := s.store.Queries().GetJobById(ctx, id)
+		if idErr == nil {
+			// Map GetJobByIdRow to GetJobBySlugRow (they have same structure)
+			row = queries.GetJobBySlugRow(idRow)
+			err = nil
+		} else {
+			err = idErr
+		}
+	} else {
+		// Not a UUID, try to fetch by slug
+		row, err = s.store.Queries().GetJobBySlug(ctx, normalized)
+	}
+
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return result, ErrJobNotFound

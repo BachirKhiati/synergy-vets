@@ -77,8 +77,29 @@ WHERE j.status = 'published'
         )
     )
   AND (
+        sqlc.narg('regions')::text[] IS NULL
+        OR EXISTS (
+            SELECT 1
+            FROM unnest(sqlc.narg('regions')::text[]) AS value
+            WHERE jl.region ILIKE '%' || value || '%'
+            OR jl.city ILIKE '%' || value || '%'
+        )
+    )
+  AND (
         sqlc.narg('contract_types')::text[] IS NULL
         OR j.contract_type = ANY(sqlc.narg('contract_types')::text[])
+    )
+  AND (
+        sqlc.narg('categories')::text[] IS NULL
+        OR EXISTS (
+            SELECT 1
+            FROM unnest(sqlc.narg('categories')::text[]) AS cat
+            WHERE (
+                cat = 'Vet' AND (j.title ILIKE '%Vet%' OR j.title ILIKE '%Surgeon%') AND j.title NOT ILIKE '%Nurse%'
+            ) OR (
+                cat = 'Nurse' AND (j.title ILIKE '%Nurse%' OR j.title ILIKE '%RVN%' OR j.title ILIKE '%SVN%')
+            )
+        )
     )
 ORDER BY j.posted_at DESC NULLS LAST, j.created_at DESC
 LIMIT sqlc.arg('limit_rows')::int OFFSET sqlc.arg('offset_rows')::int;
@@ -91,5 +112,16 @@ SELECT j.*,
 FROM jobs j
 LEFT JOIN job_locations jl ON jl.id = j.location_id
 WHERE j.slug = sqlc.arg(slug)
+    AND j.status = 'published'
+LIMIT 1;
+
+-- name: GetJobById :one
+SELECT j.*,
+       jl.country,
+       jl.region,
+       jl.city
+FROM jobs j
+LEFT JOIN job_locations jl ON jl.id = j.location_id
+WHERE j.id = sqlc.arg(id)
     AND j.status = 'published'
 LIMIT 1;

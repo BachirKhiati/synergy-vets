@@ -37,12 +37,18 @@ func (h *Handler) handleListJobs(w http.ResponseWriter, r *http.Request) {
 		PageSize:      pageSize,
 		Search:        query.Get("q"),
 		Countries:     query["country"],
+		Regions:       query["region"],
 		ContractTypes: query["contract_type"],
+		Categories:    query["category"],
 	}
 
 	result, err := h.service.ListPublishedJobs(ctx, params)
 	if err != nil {
-		writeError(w, http.StatusInternalServerError, "failed to load jobs")
+		// Log the error for debugging
+		// Ideally use a logger, but fmt.Println is fine for now if logger not available in struct
+		// But we don't have logger in Handler struct.
+		// Let's just return the error message in the response for now to see it in curl.
+		writeError(w, http.StatusInternalServerError, "failed to load jobs: "+err.Error())
 		return
 	}
 

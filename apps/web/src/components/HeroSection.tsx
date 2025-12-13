@@ -42,7 +42,7 @@ const HeroSection = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/20" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-transparent to-background" />
       </div>
-      
+
       {/* Animated Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-pulse-slow -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/20 rounded-full blur-[100px] animate-pulse-slow -z-10" style={{ animationDelay: "1s" }} />
@@ -52,28 +52,41 @@ const HeroSection = () => {
         <div className="max-w-3xl relative">
           {/* Main Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight animate-fade-up relative z-10">
-            <span className="text-foreground">We connect</span>
+            <span className="text-foreground">Veterinary</span>
             <br />
-            <span className="text-foreground">veterinary teams</span>
+            <span className="text-foreground">Recruitment</span>
             <br />
-            <span className="text-foreground">with the best talent,</span>
-            <br />
-            <span className="gradient-text italic">Nationwide</span>
-            <span className="text-foreground">.</span>
+            <span className="gradient-text italic">Specialists</span>
           </h1>
 
           {/* Subheading */}
           <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl animate-fade-up-delay-1 relative z-10">
-            Your next opportunity, guided by local insight and global expertise.
+            Almost 30 years' collective experience supporting the Veterinary profession with locum and permanent personnel across the UK.
           </p>
 
+          {/* Stats */}
+          <div className="flex flex-wrap gap-8 mt-8 animate-fade-up-delay-2 relative z-10">
+            <div>
+              <span className="text-3xl sm:text-4xl font-bold gradient-text">176</span>
+              <p className="text-sm text-muted-foreground">Vet Jobs</p>
+            </div>
+            <div>
+              <span className="text-3xl sm:text-4xl font-bold gradient-text">64</span>
+              <p className="text-sm text-muted-foreground">Vet Nurse Jobs</p>
+            </div>
+            <div>
+              <span className="text-3xl sm:text-4xl font-bold gradient-text">240+</span>
+              <p className="text-sm text-muted-foreground">Total Vacancies</p>
+            </div>
+          </div>
+
           {/* CTA Buttons */}
-          <div className="flex flex-wrap gap-4 mt-10 animate-fade-up-delay-2 relative z-10">
+          <div className="flex flex-wrap gap-4 mt-10 animate-fade-up-delay-3 relative z-10">
             <Button variant="hero" size="lg" asChild>
-              <Link to="/candidates">JOB SEEKERS</Link>
+              <Link to="/jobs">FIND A JOB</Link>
             </Button>
             <Button variant="heroOutline" size="lg" asChild>
-              <Link to="/employers">EMPLOYERS</Link>
+              <Link to="/employers">RECRUIT STAFF</Link>
             </Button>
           </div>
         </div>

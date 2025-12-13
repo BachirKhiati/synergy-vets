@@ -18,8 +18,60 @@ const Jobs = () => {
   const [selectedRegion, setSelectedRegion] = useState("All Regions");
   const [selectedType, setSelectedType] = useState("All Types");
   const [selectedSalary, setSelectedSalary] = useState("All Salaries");
-  const [selectedSpecialty, setSelectedSpecialty] = useState("All Specialties");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [jobs, setJobs] = useState<Job[]>(jobsData);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setIsLoading(true);
+      try {
+        const params = new URLSearchParams();
+        params.append("page_size", "100");
+        if (searchQuery) params.append("q", searchQuery);
+        if (selectedRegion !== "All Regions") params.append("region", selectedRegion);
+        if (selectedType !== "All Types") params.append("contract_type", selectedType);
+        if (selectedCategory !== "All Categories") params.append("category", selectedCategory);
+
+        const response = await fetch(`http://localhost:8080/api/v1/public/jobs?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch jobs");
+        }
+        const data = await response.json();
+        
+        const mappedJobs: Job[] = data.jobs.map((apiJob: any) => ({
+          id: apiJob.id,
+          slug: apiJob.slug,
+          title: apiJob.title,
+          location: `${apiJob.location.city || ""}, ${apiJob.location.country || "UK"}`.replace(/^, /, ""),
+          type: apiJob.contract_type === "Locum" ? "Locum" : "Permanent",
+          salary: apiJob.salary_min && apiJob.salary_max
+            ? `£${(apiJob.salary_min).toLocaleString()} - £${(apiJob.salary_max).toLocaleString()}`
+            : "Competitive",
+          salaryMin: apiJob.salary_min || 0,
+          salaryMax: apiJob.salary_max || 0,
+          specialty: "General Practice", // Default as API doesn't provide it yet
+          region: apiJob.location.country === "United Kingdom" ? "UK" : apiJob.location.country || "UK",
+          coordinates: [0, 0], // Default coordinates
+          description: apiJob.description,
+          postedAt: apiJob.posted_at,
+          expiresAt: apiJob.expires_at,
+        }));
+
+        setJobs(mappedJobs);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+        // Fallback to mock data is already handled by initial state
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    const timeoutId = setTimeout(() => fetchJobs(), 500);
+    return () => clearTimeout(timeoutId);
+  }, [searchQuery, selectedRegion, selectedType, selectedCategory]);
 
   // Handle region from navigation state
   useEffect(() => {
@@ -29,45 +81,17 @@ const Jobs = () => {
   }, [location.state]);
 
   const filteredJobs = useMemo(() => {
-    return jobsData.filter((job) => {
-      // Search filter
-      if (
-        searchQuery &&
-        !job.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        !job.location.toLowerCase().includes(searchQuery.toLowerCase())
-      ) {
-        return false;
-      }
-
-      // Region filter
-      if (selectedRegion !== "All Regions" && job.region !== selectedRegion) {
-        return false;
-      }
-
-      // Type filter
-      if (selectedType !== "All Types" && job.type !== selectedType) {
-        return false;
-      }
-
-      // Specialty filter
-      if (
-        selectedSpecialty !== "All Specialties" &&
-        job.specialty !== selectedSpecialty
-      ) {
-        return false;
-      }
-
-      // Salary filter
+    return jobs.filter((job) => {
+      // Salary filter (Client side)
       if (selectedSalary !== "All Salaries") {
         const range = salaryRanges.find((r) => r.label === selectedSalary);
         if (range && (job.salaryMax < range.min || job.salaryMin > range.max)) {
           return false;
         }
       }
-
       return true;
     });
-  }, [searchQuery, selectedRegion, selectedType, selectedSalary, selectedSpecialty]);
+  }, [jobs, selectedSalary]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -81,7 +105,7 @@ const Jobs = () => {
               Find Your Perfect <span className="gradient-text">Veterinary Role</span>
             </h1>
             <p className="mt-4 text-muted-foreground text-lg">
-              Browse {jobsData.length}+ opportunities worldwide. Use filters or explore
+              Browse {jobs.length}+ opportunities worldwide. Use filters or explore
               the map to find your next career move.
             </p>
           </div>
@@ -133,8 +157,8 @@ const Jobs = () => {
                 setSelectedType={setSelectedType}
                 selectedSalary={selectedSalary}
                 setSelectedSalary={setSelectedSalary}
-                selectedSpecialty={selectedSpecialty}
-                setSelectedSpecialty={setSelectedSpecialty}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
               />
             </div>
 

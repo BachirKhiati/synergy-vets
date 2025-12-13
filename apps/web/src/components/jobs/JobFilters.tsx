@@ -7,7 +7,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { specialties, regions, jobTypes, salaryRanges } from "@/lib/jobsData";
+import { salaryRanges } from "@/lib/jobsData";
+
+// Define the options based on user request
+const categories = ["Vet", "Nurse"];
+const contractTypes = ["Locum", "Permanent", "Odd Days"];
+const regions = [
+  "Northern Ireland",
+  "East Midlands",
+  "Eastern",
+  "London",
+  "North East",
+  "North West",
+  "Scotland",
+  "South East",
+  "South West",
+  "Wales",
+  "West Midlands",
+  "Yorks And The Humber",
+];
 
 interface JobFiltersProps {
   searchQuery: string;
@@ -16,10 +34,10 @@ interface JobFiltersProps {
   setSelectedRegion: (value: string) => void;
   selectedType: string;
   setSelectedType: (value: string) => void;
+  selectedCategory: string;
+  setSelectedCategory: (value: string) => void;
   selectedSalary: string;
   setSelectedSalary: (value: string) => void;
-  selectedSpecialty: string;
-  setSelectedSpecialty: (value: string) => void;
 }
 
 const JobFilters = ({
@@ -29,10 +47,10 @@ const JobFilters = ({
   setSelectedRegion,
   selectedType,
   setSelectedType,
+  selectedCategory,
+  setSelectedCategory,
   selectedSalary,
   setSelectedSalary,
-  selectedSpecialty,
-  setSelectedSpecialty,
 }: JobFiltersProps) => {
   return (
     <div className="card-gradient rounded-2xl p-6 border border-border">
@@ -49,20 +67,21 @@ const JobFilters = ({
         />
       </div>
 
-      {/* Region Filter */}
+      {/* Category Filter */}
       <div className="mb-4">
         <label className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-          <MapPin className="w-4 h-4" />
-          Location
+          <Stethoscope className="w-4 h-4" />
+          Category
         </label>
-        <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+        <Select value={selectedCategory} onValueChange={setSelectedCategory}>
           <SelectTrigger className="bg-background/50 border-border">
-            <SelectValue placeholder="Select region" />
+            <SelectValue placeholder="All Categories" />
           </SelectTrigger>
           <SelectContent>
-            {regions.map((region) => (
-              <SelectItem key={region} value={region}>
-                {region}
+            <SelectItem value="All Categories">All Categories</SelectItem>
+            {categories.map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat} Jobs
               </SelectItem>
             ))}
           </SelectContent>
@@ -77,12 +96,34 @@ const JobFilters = ({
         </label>
         <Select value={selectedType} onValueChange={setSelectedType}>
           <SelectTrigger className="bg-background/50 border-border">
-            <SelectValue placeholder="Select type" />
+            <SelectValue placeholder="All Types" />
           </SelectTrigger>
           <SelectContent>
-            {jobTypes.map((type) => (
+            <SelectItem value="All Types">All Types</SelectItem>
+            {contractTypes.map((type) => (
               <SelectItem key={type} value={type}>
                 {type}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Region Filter */}
+      <div className="mb-4">
+        <label className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+          <MapPin className="w-4 h-4" />
+          Region
+        </label>
+        <Select value={selectedRegion} onValueChange={setSelectedRegion}>
+          <SelectTrigger className="bg-background/50 border-border">
+            <SelectValue placeholder="All Regions" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="All Regions">All Regions</SelectItem>
+            {regions.map((region) => (
+              <SelectItem key={region} value={region}>
+                {region}
               </SelectItem>
             ))}
           </SelectContent>
@@ -97,32 +138,13 @@ const JobFilters = ({
         </label>
         <Select value={selectedSalary} onValueChange={setSelectedSalary}>
           <SelectTrigger className="bg-background/50 border-border">
-            <SelectValue placeholder="Select salary" />
+            <SelectValue placeholder="All Salaries" />
           </SelectTrigger>
           <SelectContent>
+            <SelectItem value="All Salaries">All Salaries</SelectItem>
             {salaryRanges.map((range) => (
               <SelectItem key={range.label} value={range.label}>
                 {range.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Specialty Filter */}
-      <div>
-        <label className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-          <Stethoscope className="w-4 h-4" />
-          Specialty
-        </label>
-        <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
-          <SelectTrigger className="bg-background/50 border-border">
-            <SelectValue placeholder="Select specialty" />
-          </SelectTrigger>
-          <SelectContent>
-            {specialties.map((specialty) => (
-              <SelectItem key={specialty} value={specialty}>
-                {specialty}
               </SelectItem>
             ))}
           </SelectContent>

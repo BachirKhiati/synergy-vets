@@ -8,6 +8,7 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.0
 	github.com/google/uuid v1.5.0
 	github.com/jackc/pgx/v5 v5.7.4
+	github.com/lib/pq v1.10.9
 	github.com/pressly/goose/v3 v3.18.0
 	github.com/rs/zerolog v1.32.0
 	github.com/sqlc-dev/pqtype v0.3.0
@@ -18,7 +19,6 @@ require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
-	github.com/lib/pq v1.10.9 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect

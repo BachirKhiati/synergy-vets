@@ -1,5 +1,6 @@
 export interface Job {
   id: string;
+  slug?: string;
   title: string;
   location: string;
   type: "Permanent" | "Locum";
@@ -11,6 +12,8 @@ export interface Job {
   coordinates: [number, number];
   featured?: boolean;
   description?: string;
+  postedAt?: string;
+  expiresAt?: string;
 }
 
 export const jobsData: Job[] = [

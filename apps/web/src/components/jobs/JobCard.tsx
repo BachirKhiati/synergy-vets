@@ -1,4 +1,5 @@
 import { MapPin, Briefcase, Clock, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Job } from "@/lib/jobsData";
 
@@ -58,9 +59,12 @@ const JobCard = ({ job, isSelected, onClick }: JobCardProps) => {
         variant="ghost"
         size="sm"
         className="mt-4 w-full justify-between group/btn text-sm"
+        asChild
       >
-        <span>MORE INFO</span>
-        <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+        <Link to={`/jobs/${job.slug || job.id}`}>
+          <span>MORE INFO</span>
+          <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+        </Link>
       </Button>
     </div>
   );
